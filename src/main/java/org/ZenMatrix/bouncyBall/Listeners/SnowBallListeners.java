@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Snow;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -26,6 +27,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.Arrays;
+
 public class SnowBallListeners implements Listener {
 
     private final BouncyBall plugin;
@@ -39,6 +42,11 @@ public class SnowBallListeners implements Listener {
     public void OnSnowBallHit(ProjectileHitEvent event) {
 
         ItemStack bouncyBall = new ItemStack(Material.SNOWBALL);
+        ItemMeta bouncyBallMeta = bouncyBall.getItemMeta();
+        bouncyBallMeta.setDisplayName("Bouncy Ball");
+        bouncyBallMeta.setLore(Arrays.asList("A Ball That Bounce"));
+        bouncyBallMeta.addEnchant(Enchantment.SHARPNESS,5,false);
+        bouncyBall.setItemMeta(bouncyBallMeta);
 
         if (event.getEntity() instanceof Snowball snowball) {
 
@@ -50,7 +58,7 @@ public class SnowBallListeners implements Listener {
 
                     // Get the direction of the face that was hit
                     BlockFace blockFace = event.getHitBlockFace();
-                    Vector velocity = snowball.getVelocity().add(blockFace.getDirection().multiply(plugin.getConfig().getDouble("MultiplyVelocity")));
+                    Vector velocity = blockFace.getDirection().multiply(plugin.getConfig().getDouble("MultiplyVelocity"));
 
                     // Calculate the spawn location for the new snowball, which will be based on the block hit
                     Location spawnLocation = event.getHitBlock().getLocation().add(blockFace.getDirection().add(new Vector(0.5,0.5,0.5)));
@@ -88,6 +96,7 @@ public class SnowBallListeners implements Listener {
                     @Override
                     public void run() {
                         snowball.remove();
+
                     }
                 }.runTaskLater(plugin, delay);
             }
