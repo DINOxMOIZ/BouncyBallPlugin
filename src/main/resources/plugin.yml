@@ -2,3 +2,10 @@ name: BouncyBall
 version: '1.0'
 main: org.ZenMatrix.bouncyBall.BouncyBall
 api-version: '1.21'
+commands:
+  ball:
+    description: gives the player a bouncy ball
+    usage: /ball
+    aliases:
+      - b
+    permission: minecraft.command.op
