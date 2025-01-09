@@ -1,0 +1,4 @@
+name: BouncyBall
+version: '1.0'
+main: org.ZenMatrix.bouncyBall.BouncyBall
+api-version: '1.21'
