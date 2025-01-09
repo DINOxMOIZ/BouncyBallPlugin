@@ -30,6 +30,7 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 
 public class SnowBallListeners implements Listener {
+    int bounce = 0;
 
     private final BouncyBall plugin;
 
@@ -40,6 +41,9 @@ public class SnowBallListeners implements Listener {
 
     @EventHandler
     public void OnSnowBallHit(ProjectileHitEvent event) {
+
+
+
 
         ItemStack bouncyBall = new ItemStack(Material.SNOWBALL);
         ItemMeta bouncyBallMeta = bouncyBall.getItemMeta();
@@ -56,6 +60,9 @@ public class SnowBallListeners implements Listener {
 
                 if (event.getHitBlock() != null) {
 
+
+                    bounce++;
+
                     // Get the direction of the face that was hit
                     BlockFace blockFace = event.getHitBlockFace();
                     Vector velocity = blockFace.getDirection().multiply(plugin.getConfig().getDouble("MultiplyVelocity"));
@@ -67,8 +74,14 @@ public class SnowBallListeners implements Listener {
                     Snowball newSnowball = (Snowball) snowball.getWorld().spawnEntity(spawnLocation, EntityType.SNOWBALL);
 
                     // Set the velocity of the new snowball
+
                     newSnowball.setVelocity(velocity);
-                    newSnowball.setItem(bouncyBall);
+                    if (bounce <= 3){
+                        newSnowball.setItem(bouncyBall);
+                    }else {
+                        bounce = 0;
+                    }
+
                 }
             }
 
